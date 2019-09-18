@@ -1,4 +1,6 @@
-from flask import Flask, render_template
+from importlib.resources import contents
+
+from flask import Flask, render_template, request, jsonify
 from sqlalchemy import  create_engine, Column, Integer, String
 from flask_sqlalchemy import SQLAlchemy
 
@@ -27,9 +29,18 @@ def hello():
 
     db.create_all()
     test_post = Post('test1', 'test2', 'test3')
-    db.session.add(test_post)
-    db.session.commit()
+    #db.session.add(test_post)
+    #db.session.commit()
     return render_template("index.html", dbData=Post.query.all())
+
+
+@app.route("/process", methods=['POST'])
+def test():
+    name = request.form['postname']
+    tag = request.form['tags']
+    body = request.form['body']
+    str = name + tag + body
+    return jsonify('output', str)
 
 
 if __name__ == "__main__":
