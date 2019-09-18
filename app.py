@@ -31,6 +31,8 @@ def hello():
     test_post = Post('test1', 'test2', 'test3')
     #db.session.add(test_post)
     #db.session.commit()
+
+    print(db.session.query.column_descriptions())
     return render_template("index.html", dbData=Post.query.all())
 
 
@@ -39,8 +41,11 @@ def test():
     name = request.form['postname']
     tag = request.form['tags']
     body = request.form['body']
-    str = name + tag + body
+    test_post = Post(name,tag,body)
+    db.session.add(test_post)
+    db.session.commit()
     return jsonify('output', str)
+
 
 
 if __name__ == "__main__":
