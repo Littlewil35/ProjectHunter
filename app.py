@@ -23,17 +23,18 @@ class Post(db.Model):
         self.post = post
 
 
+def to_arr(arr):
+    data = []
+    for Post in arr:
+        data.append((Post.name, Post.tags, Post.post))
+    return data
+
 @app.route("/")
 def hello():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
-
     db.create_all()
-    test_post = Post('test1', 'test2', 'test3')
-    #db.session.add(test_post)
-    #db.session.commit()
-
-    print(db.session.query.column_descriptions())
-    return render_template("index.html", dbData=Post.query.all())
+    data = to_arr(Post.query.all())
+    return render_template("index.html", dbData=data)
 
 
 @app.route("/process", methods=['POST'])
