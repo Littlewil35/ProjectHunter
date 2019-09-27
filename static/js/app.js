@@ -30,14 +30,19 @@ $(document).ready(function() {
 	});
 
 });
-
-/*$(function() {
-      $("#button").click( function(){
-                console.log(document.getElementById('input').value);
-
+var visible = false;
+$(function() {
+      $("#showHide").click( function(){
+      if (visible){
+            document.getElementById("form").style.display = "none";
+            visible = false;
+      }else{
+            document.getElementById("form").style.display = "block";
+            visible = true;
+      }
            }
       );
-});*/
+});
 
 
 

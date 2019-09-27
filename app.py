@@ -14,6 +14,7 @@ class Post(db.Model):
     tags = Column(String)
     post = Column(String)
 
+
     def __repr__(self):
         return "<Post(name='%s', tags='%s', post='%s')>" % (self.name, self.tags, self.post)
 
