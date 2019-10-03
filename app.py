@@ -3,9 +3,15 @@ from importlib.resources import contents
 from flask import Flask, render_template, request, jsonify
 from sqlalchemy import  create_engine, Column, Integer, String
 from flask_sqlalchemy import SQLAlchemy
+from enum import Enum
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
+
+class status(Enum):
+    done = 1
+    in_prog = 2
+    avail = 3
 
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -13,6 +19,7 @@ class Post(db.Model):
     name = Column(String)
     tags = Column(String)
     post = Column(String)
+    status = Column(String)
 
 
     def __repr__(self):
@@ -35,7 +42,8 @@ def hello():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
     db.create_all()
     data = to_arr(Post.query.all())
-    return render_template("index.html", dbData=data)
+    #m_post = Post.query.filter_by(tags='android').all()
+    return render_template("index.html", dbData=data, testdata="hello")
 
 
 @app.route("/process", methods=['POST'])
@@ -43,7 +51,8 @@ def test():
     name = request.form['postname']
     tag = request.form['tags']
     body = request.form['body']
-    test_post = Post(name,tag,body)
+    status = request.form['status']
+    test_post = Post(name,tag,body,status)
     db.session.add(test_post)
     db.session.commit()
     return jsonify('output', str)

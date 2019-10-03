@@ -7,6 +7,7 @@ $(document).ready(function() {
 				postname : $('#postname').val(),
 				tags : $('#tags').val(),
 				body : $('#posttext').val()
+				status : $('#status').val()
 
 			},
 			type : 'POST',
