@@ -1,12 +1,12 @@
 $(document).ready(function() {
 
 	$('form').on('submit', function(event) {
-    console.log("Hello")
+	    console.log("post successful")
 		$.ajax({
 			data : {
 				postname : $('#postname').val(),
 				tags : $('#tags').val(),
-				body : $('#posttext').val()
+				body : $('#posttext').val(),
 				status : $('#status').val()
 
 			},
@@ -44,6 +44,3 @@ $(function() {
            }
       );
 });
-
-
-

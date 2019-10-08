@@ -1,7 +1,7 @@
 from importlib.resources import contents
 
 from flask import Flask, render_template, request, jsonify
-from sqlalchemy import  create_engine, Column, Integer, String
+from sqlalchemy import Column, Integer, String
 from flask_sqlalchemy import SQLAlchemy
 from enum import Enum
 
@@ -23,12 +23,13 @@ class Post(db.Model):
 
 
     def __repr__(self):
-        return "<Post(name='%s', tags='%s', post='%s')>" % (self.name, self.tags, self.post)
+        return "<Post(name='%s', tags='%s', post='%s', status='%s')>" % (self.name, self.tags, self.post, self.status)
 
-    def __init__(self, name, tags, post):
+    def __init__(self, name, tags, post, status):
         self.name = name
         self.tags = tags
         self.post = post
+        self.status = status
 
 
 def to_arr(arr):
@@ -42,8 +43,10 @@ def hello():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
     db.create_all()
     data = to_arr(Post.query.all())
-    #m_post = Post.query.filter_by(tags='android').all()
-    return render_template("index.html", dbData=data, testdata="hello")
+    m_posts = to_arr(Post.query.filter_by(status='current').all())
+    print(data)
+    return render_template("index.html", dbData=data)
+
 
 
 @app.route("/process", methods=['POST'])
@@ -60,4 +63,4 @@ def test():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
