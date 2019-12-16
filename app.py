@@ -7,12 +7,6 @@ app = Flask(__name__)
 db = SQLAlchemy(app)
 
 
-class status(Enum):
-    done = 1
-    in_prog = 2
-    avail = 3
-
-
 class Post(db.Model):
     __tablename__ = 'posts'
     id = Column(Integer, primary_key=True)
@@ -22,7 +16,7 @@ class Post(db.Model):
     status = Column(String)
 
     def __repr__(self):
-        return "<Post(name='%s', tags='%s', post='%s', status='%s')>" % (self.name, self.tags, self.post, self.status)
+        return "<Post(name='%s', tags='%s', post='%s', status='%s')>" % (self.name, self.tags, self.post, self.status.name)
 
     def __init__(self, name, tags, post, status):
         self.name = name
@@ -61,19 +55,23 @@ def test():
 
 @app.route("/upforgrabs")
 def query_inprog():
-    m_posts = to_arr(Post.query.filter_by(status='avail').all())
+    m_posts = to_arr(Post.query.filter_by(status="In progress").all())
     return render_template("index.html", dbData=m_posts)
 
 @app.route("/seekingcolab")
 def query_done():
-    m_posts = to_arr(Post.query.filter_by(status='in_prog').all())
+    m_posts = to_arr(Post.query.filter_by(status="Seeking collaborators").all())
     return render_template("index.html", dbData=m_posts)
 
 @app.route("/completed")
 def query_avail():
-    m_posts = to_arr(Post.query.filter_by(status='done').all())
+    m_posts = to_arr(Post.query.filter_by(status="Completed").all())
     return render_template("index.html", dbData=m_posts)
 
+@app.route("/all")
+def query_all():
+    m_posts = to_arr(Post.query.all())
+    return render_template("index.html", dbData=m_posts)
 
 
 if __name__ == "__main__":

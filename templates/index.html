@@ -24,14 +24,15 @@
 <div>
   <form id="form" class="fixed-form collapse in">
     Post name:<br>
-    <input style=" border-radius: 10px" type="text" id="postname"><br>
-    Tags:<br>
-    <input style=" border-radius: 12px" type="text" id="tags"><br>
-      Post text:<br>
-    <input style="border-radius: 12px" type="text" id="posttext"><br>
-    Status:<br>
-      <input type="text" style=" border-radius: 12px" id="status"><br>
-      <button type="submit" id="realbutt" class="btn btn-primary btn-circle-small">submit</button>
+    <input style=" border-radius: 10px" type="text" id="postname"><br>Tags:<br>
+    <input style=" border-radius: 12px" type="text" id="tags"><br>Post text:<br>
+    <input style="border-radius: 12px" type="text" id="posttext">
+    <select class="form-control" id="status">
+      <option>In progress</option>
+      <option>Seeking collaborators</option>
+      <option>Completed</option>
+    </select>
+    <button type="submit" id="realbutt" class="btn btn-primary btn-circle-small">submit</button>
   </form>
   <button class="btn-primary fixed-btn btn-lg" data-toggle="collapse" href="#form" role="button" aria-expanded="false" aria-controls="form" style="border-radius: 10px" id="showHide">New project...</button>
 </div>
