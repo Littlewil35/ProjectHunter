@@ -73,6 +73,21 @@ def query_all():
     m_posts = to_arr(Post.query.all())
     return render_template("index.html", dbData=m_posts)
 
+'''@app.route("/search", methods=['POST'])
+def search():
+    searchText = request.form['searchText']
+    print(searchText)
+    m_posts = to_arr(Post.query.filter_by(name=searchText).all())
+    print(m_posts)
+    return render_template("index.html")
+'''
+
+@app.route("/search")
+def search():
+    args = request.args.get("param")
+    print(args)
+    m_posts = to_arr(Post.query.filter_by(name=args).all())
+    return render_template("index.html", dbData=m_posts)
 
 if __name__ == "__main__":
     app.run()

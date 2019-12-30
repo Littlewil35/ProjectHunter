@@ -1,36 +1,18 @@
-$(document).ready(function() {
+function submitProjo() {
+	console.log("post successful");
+	$.ajax({
+		data : {
+			postname : $('#postname').val(),
+			tags : $('#tags').val(),
+			body : $('#posttext').val(),
+			status : $('#status').val()
 
-	$('form').on('submit', function(event) {
-	    console.log("post successful")
-		$.ajax({
-			data : {
-				postname : $('#postname').val(),
-				tags : $('#tags').val(),
-				body : $('#posttext').val(),
-				status : $('#status').val()
+		},
+		type : 'POST',
+		url : '/process'
+	})
+}
 
-			},
-			type : 'POST',
-			url : '/process'
-		})
-		.done(function(data) {
-
-			if (data.error) {
-				$('#errorAlert').text(data.error).show();
-				$('#successAlert').hide();
-			}
-			else {
-				$('#successAlert').text(data.name).show();
-				$('#errorAlert').hide();
-			}
-
-		});
-
-		event.preventDefault();
-
-	});
-
-});
 var visible = false;
 $(function() {
       $("#showHide").click( function(){
@@ -44,3 +26,11 @@ $(function() {
            }
       );
 });
+
+
+function mSearch(){
+	var searchText = document.getElementById("searchBox").value.replace(" ", "+");
+	document.getElementById("searchButt").setAttribute("href", "/search?param=" + searchText);
+	return false;
+}
+
