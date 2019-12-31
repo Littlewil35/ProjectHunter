@@ -34,3 +34,14 @@ function mSearch(){
 	return false;
 }
 
+
+function deleteProjo(id) {
+	$.ajax({
+		data : {
+			id : id
+		},
+		type : 'POST',
+		url : '/delete'
+	})
+	console.log("delete successful");
+}
