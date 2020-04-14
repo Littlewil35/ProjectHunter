@@ -2,6 +2,8 @@ from enum import Enum
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, or_
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
@@ -35,7 +37,16 @@ def to_arr(arr):
 
 @app.route("/")
 def hello():
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/william/ProjectHunter.sqlite'
+    cwd = os.getcwd()
+    if os.path.exists(cwd):
+        #create sqlite file
+        database_file = open("ProjectHunter.sqlite", "w+")
+        path = os.path.join(cwd, "ProjectHunter.sqlite")
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + path
+    else:
+        print("Error.")
+        exit(0)
+    #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/william/ProjectHunter.sqlite'
     db.create_all()
     data = to_arr(Post.query.all())
     data.__repr__()
