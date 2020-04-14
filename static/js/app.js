@@ -1,3 +1,4 @@
+// pulls data from various textboxes and sends it to the backend
 function submitProjo() {
 	console.log("post successful");
 	$.ajax({
@@ -12,7 +13,7 @@ function submitProjo() {
 		url : '/process'
 	})
 }
-
+// animates the pop up box
 var visible = false;
 $(function() {
       $("#showHide").click( function(){
@@ -27,14 +28,14 @@ $(function() {
       );
 });
 
-
+// communicates the search function to the backend
 function mSearch(){
 	var searchText = document.getElementById("searchBox").value.replace(" ", "+");
 	document.getElementById("searchButt").setAttribute("href", "/search?param=" + searchText);
 	return false;
 }
 
-
+// deletes project given its id
 function deleteProjo(id) {
 	$.ajax({
 		data : {

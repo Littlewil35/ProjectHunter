@@ -1,14 +1,12 @@
-from enum import Enum
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, or_
-from dotenv import load_dotenv
 import os
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
 
-
+#create the database format
 class Post(db.Model):
     __tablename__ = 'posts'
     id = Column(Integer, primary_key=True)
@@ -27,14 +25,14 @@ class Post(db.Model):
         self.post = post
         self.status = status
 
-
+#convert a post object to an array
 def to_arr(arr):
     data = []
     for Post in arr:
         data.append((Post.name, Post.tags, Post.post))
     return data
 
-
+#the main route, creates database and renders home page
 @app.route("/")
 def hello():
     cwd = os.getcwd()
@@ -43,16 +41,16 @@ def hello():
         database_file = open("ProjectHunter.sqlite", "w+")
         path = os.path.join(cwd, "ProjectHunter.sqlite")
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + path
+        print()
     else:
         print("Error.")
         exit(0)
-    #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/william/ProjectHunter.sqlite'
     db.create_all()
     data = to_arr(Post.query.all())
     data.__repr__()
     return render_template("index.html", dbData=data)
 
-
+#processes a post that has been created and adds it to the database
 @app.route("/process", methods=['POST'])
 def submit():
     name = request.form['postname']
@@ -64,41 +62,31 @@ def submit():
     db.session.commit()
     return jsonify('output', str)
 
-
+#filters for projects currently in progress
 @app.route("/upforgrabs")
 def query_inprog():
     m_posts = to_arr(Post.query.filter_by(status="In progress").all())
     return render_template("index.html", dbData=m_posts)
 
-
+#filters for projects seeking collaborators
 @app.route("/seekingcolab")
 def query_done():
     m_posts = to_arr(Post.query.filter_by(status="Seeking collaborators").all())
     return render_template("index.html", dbData=m_posts)
 
-
+#filters for projects already completed
 @app.route("/completed")
 def query_avail():
     m_posts = to_arr(Post.query.filter_by(status="Completed").all())
     return render_template("index.html", dbData=m_posts)
 
-
+#display all projects
 @app.route("/all")
 def query_all():
     m_posts = to_arr(Post.query.all())
     return render_template("index.html", dbData=m_posts)
 
-
-'''@app.route("/search", methods=['POST'])
-def search():
-    searchText = request.form['searchText']
-    print(searchText)
-    m_posts = to_arr(Post.query.filter_by(name=searchText).all())
-    print(m_posts)
-    return render_template("index.html")
-'''
-
-
+#search for a project
 @app.route("/search")
 def search():
     args = request.args.get("param")
@@ -107,6 +95,7 @@ def search():
         Post.query.filter(or_(Post.name == args, Post.tags == args, Post.post == args, Post.status == args)))
     return render_template("index.html", dbData=m_posts)
 
+#delete a project
 @app.route("/delete", methods=['POST'])
 def delete():
     id = request.form['id']
