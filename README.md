@@ -3,6 +3,7 @@ Web App developed for CSH to help the community keep track of completed projects
 inspiration for new projects. Created using Flask and SQLAlchemy.
 
 Getting started:
+
 Clone the project by using this command:
 
 git clone https://github.com/william-a-kressner/ProjectHunter
